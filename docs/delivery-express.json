@@ -1,0 +1,49 @@
+{
+  "stablishmentId": "000000000000000000",
+  "name": "My Stablishment",
+  "address": "My Address",
+  "phone": "0000000000",
+  "contacts": [
+    {
+      "id": "000000000000000000",
+      "name": "Some User",
+      "email": "some.user@email.com",
+      "phone": "0000000000"
+    }
+  ],
+  "deliveryRequest": {
+    "createdAt": "2020-01-01T00:00:00.000Z",
+    "status": "pending",
+    "driver": {
+      "id": "000000000000000000",
+      "name": "Some User",
+      "phone": "0000000000",
+      "status": "available"
+    },
+    "products": [
+      {
+        "id": "000000000000000000",
+        "name": "My Product",
+        "price": 0.0,
+        "description": "My Product Description",
+        "image": "https://myimage.com/image.jpg",
+        "quantity": 0
+      }
+    ],
+    "client": {
+      "id": "000000000000000000",
+      "name": "Some User",
+      "phone": "0000000000",
+      "address": {
+        "street": "My Street",
+        "number": "000",
+        "complement": "My Complement",
+        "neighborhood": "My Neighborhood",
+        "city": "My City",
+        "state": "My State",
+        "country": "My Country",
+        "zip_code": "00000000"
+      }
+    }
+  }
+}
