@@ -23,6 +23,7 @@ class Stablishment
     public List<Contact> GetContacts();
     public List<Product> GetProducts();
     public List<Client> GetClients();
+}
 ```
 
 ```json
