@@ -11,4 +11,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DeliveryExpress.Application\DeliveryExpress.Application.csproj" />
+    <ProjectReference Include="..\DeliveryExpress.Contracts\DeliveryExpress.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>
