@@ -1,5 +1,7 @@
 using DeliveryExpress.Contracts.CreateDeliveryRequest;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using CreateDeliveryRequestCommand = DeliveryExpress.Application.DeliveryRequestApplication.Commands.CreateDeliveryRequest;
 
 namespace DeliveryExpress.Api.Controllers
 {
@@ -10,10 +12,12 @@ namespace DeliveryExpress.Api.Controllers
     public class DeliveryRequestController : Controller
     {
         private readonly ILogger<DeliveryRequestController> logger;
+        private readonly IMediator mediator;
 
-        public DeliveryRequestController(ILogger<DeliveryRequestController> logger)
+        public DeliveryRequestController(ILogger<DeliveryRequestController> logger, IMediator mediator)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.mediator = mediator;
         }
 
         public IActionResult Index()
@@ -24,15 +28,17 @@ namespace DeliveryExpress.Api.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(CreateDeliveryRequestResponse), StatusCodes.Status200OK)]
         [ProducesErrorResponseType(typeof(ValidationProblemDetails))]
-        public ActionResult<CreateDeliveryRequestResponse> CreateDeliveryRequest([FromBody] CreateDeliveryRequest request)
+        public async Task<ActionResult<CreateDeliveryRequestResponse>> CreateDeliveryRequest([FromBody] CreateDeliveryRequest request)
         {
             try
             {
                 logger.LogInformation("Creating delivery request");
-                CreateDeliveryRequestResponse response = new()
+                CreateDeliveryRequestResponse response = await mediator.Send(new CreateDeliveryRequestCommand
                 {
-                    Id = 1
-                };
+                    Items = request.Items,
+                    ClientId = request.ClientId,
+                    ContactId = 1 //TODO! request.StablishmentId
+                });
                 return Ok(response);
             }
             catch (Exception e)
