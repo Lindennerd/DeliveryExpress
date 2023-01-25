@@ -1,11 +1,14 @@
 using DeliveryExpress.Domain.SeedWork;
+using FluentValidation;
 
-namespace DeliveryExpress.Domain.Common
+namespace DeliveryExpress.Domain.Common.AddressValueObject
 {
     public class Address : ValueObject
     {
         public Address(string street, string city, string country, string zipCode, string complement, string neighborhood)
         {
+            _validator.ValidateAndThrow(this);
+
             Street = street;
             City = city;
             Country = country;
@@ -13,6 +16,8 @@ namespace DeliveryExpress.Domain.Common
             Complement = complement;
             Neighborhood = neighborhood;
         }
+
+        private readonly AddressValidator _validator = new();
 
         public string Street { get; } = null!;
         public string City { get; } = null!;
