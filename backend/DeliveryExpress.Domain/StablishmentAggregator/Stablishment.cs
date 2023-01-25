@@ -1,5 +1,5 @@
 using System.Collections.ObjectModel;
-using DeliveryExpress.Domain.Common;
+using DeliveryExpress.Domain.Common.AddressValueObject;
 using DeliveryExpress.Domain.SeedWork;
 
 namespace DeliveryExpress.Domain.StablishmentAggregator
