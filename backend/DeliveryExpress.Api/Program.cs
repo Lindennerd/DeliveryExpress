@@ -7,12 +7,10 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-// Add MediatR
-
 builder.Services
-    .AddDeliveryRequestModule();
-
-builder.Services.AddDeliveryRequestRepository();
+    .AddInfrastructure(builder.Configuration)
+    .AddDeliveryRequestModule()
+    .AddDeliveryRequestRepository();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

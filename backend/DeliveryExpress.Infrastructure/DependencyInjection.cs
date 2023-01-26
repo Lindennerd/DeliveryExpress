@@ -1,5 +1,7 @@
 using DeliveryExpress.Domain.DeliveryRequestAggregator;
+using DeliveryExpress.Domain.SeedWork;
 using DeliveryExpress.Infrastructure.DeliveryRequest;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,18 +9,29 @@ namespace DeliveryExpress.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddDbContext<DeliveryExpressContext>(options =>
-            //    options.UseSqlServer(configuration.GetConnectionString("DeliveryExpressDatabase")));
+            _ = services.AddDbContext<DeliveryExpressContext>(options =>
+               options.UseSqlServer(configuration.GetConnectionString("DeliveryExpressDatabase"),
+                sqlServerOptionsAction: sqlOptions =>
+                {
+                    _ = sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 10,
+                        maxRetryDelay: TimeSpan.FromSeconds(30),
+                        errorNumbersToAdd: null);
+                    _ = sqlOptions.MigrationsAssembly("DeliveryExpress.Api"); // ugly af
+                })
+            );
 
-            //services.AddScoped<IDeliveryRequestRepository, DeliveryRequestRepository>();
-            //services.AddScoped<IUnitOfWork, DeliveryExpressContext>();
+            _ = services.AddScoped<IUnitOfWork, DeliveryExpressContext>();
+
+            return services;
         }
 
-        public static void AddDeliveryRequestRepository(this IServiceCollection services)
+        public static IServiceCollection AddDeliveryRequestRepository(this IServiceCollection services)
         {
             _ = services.AddScoped<IDeliveryRequestRepository, DeliveryRequestRepository>();
+            return services;
         }
     }
 }

@@ -7,7 +7,6 @@ namespace DeliveryExpress.Domain.DeliveryRequestAggregator
     public class DeliveryRequest : Entity, IAggregateRoot
     {
         private readonly DeliveryRequestValidator validator = new();
-
         public int Client { get; } = default!;
         public int Contact { get; private set; } = default!;
         public Address Address { get; private set; } = null!;
@@ -15,7 +14,11 @@ namespace DeliveryExpress.Domain.DeliveryRequestAggregator
         public DateTime? DeliveryDate { get; private set; }
         public DeliveryRequestStatus Status { get; private set; } = DeliveryRequestStatus.Pending;
 
-        public DeliveryRequest(int clientId, int contactId, Address address)
+        private DeliveryRequest()
+        {
+        }
+
+        public DeliveryRequest(int clientId, int contactId, Address address) : this()
         {
             Client = clientId;
             Contact = contactId;
