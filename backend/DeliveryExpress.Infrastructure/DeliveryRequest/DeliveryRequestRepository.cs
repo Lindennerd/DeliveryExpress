@@ -5,21 +5,28 @@ namespace DeliveryExpress.Infrastructure.DeliveryRequest
 {
     public class DeliveryRequestRepository : IDeliveryRequestRepository
     {
-        public IUnitOfWork UnitOfWork => throw new NotImplementedException();
+        private readonly DeliveryExpressContext _context = null!;
+
+        public IUnitOfWork UnitOfWork => _context;
+
+        public DeliveryRequestRepository(DeliveryExpressContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
 
         public Domain.DeliveryRequestAggregator.DeliveryRequest Add(Domain.DeliveryRequestAggregator.DeliveryRequest deliveryRequest)
         {
-            return deliveryRequest;
+            return _context.DeliveryRequests.Add(deliveryRequest).Entity;
         }
 
-        public Task<Domain.DeliveryRequestAggregator.DeliveryRequest> GetByDeliveryRequestIdAsync(int deliveryRequestId)
+        public async Task<Domain.DeliveryRequestAggregator.DeliveryRequest> GetByDeliveryRequestIdAsync(int deliveryRequestId)
         {
-            throw new NotImplementedException();
+            return await _context.DeliveryRequests.FindAsync(deliveryRequestId);
         }
 
         public void Update(Domain.DeliveryRequestAggregator.DeliveryRequest deliveryRequest)
         {
-            throw new NotImplementedException();
+            _context.DeliveryRequests.Update(deliveryRequest);
         }
     }
 }

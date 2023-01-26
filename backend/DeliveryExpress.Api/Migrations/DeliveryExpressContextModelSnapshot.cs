@@ -47,6 +47,12 @@ namespace DeliveryExpress.Api.Migrations
                         .HasColumnType("int")
                         .HasColumnName("ContactId");
 
+                    b.Property<DateTime>("requestDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2023, 1, 26, 19, 34, 5, 593, DateTimeKind.Local).AddTicks(6991))
+                        .HasColumnName("RequestDate");
+
                     b.HasKey("Id");
 
                     b.ToTable("DeliveryRequests", "DeliveryRequest");
