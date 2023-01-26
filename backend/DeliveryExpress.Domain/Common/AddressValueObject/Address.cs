@@ -5,15 +5,17 @@ namespace DeliveryExpress.Domain.Common.AddressValueObject
 {
     public class Address : ValueObject
     {
-        public Address(string street, string city, string zipCode, string complement, string neighborhood)
+        public Address(string street, int number, string state, string city, string zipCode, string complement, string neighborhood)
         {
-            _validator.ValidateAndThrow(this);
-
             Street = street;
             City = city;
             ZipCode = zipCode;
             Complement = complement;
             Neighborhood = neighborhood;
+            Number = number;
+            State = state;
+
+            _validator.ValidateAndThrow(this);
         }
 
         private readonly AddressValidator _validator = new();

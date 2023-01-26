@@ -1,3 +1,4 @@
+using DeliveryExpress.Application.DeliveryRequestApplication.Events;
 using DeliveryExpress.Contracts.Common;
 using DeliveryExpress.Contracts.CreateDeliveryRequest;
 using DeliveryExpress.Domain.DeliveryRequestAggregator;
@@ -19,6 +20,7 @@ namespace DeliveryExpress.Application.DeliveryRequestApplication.Commands
         private readonly ILogger<CreateDeliveryRequestHandler> logger;
         private readonly IDeliveryRequestRepository deliveryRequestRepository;
 
+
         public CreateDeliveryRequestHandler(
             ILogger<CreateDeliveryRequestHandler> logger,
             IDeliveryRequestRepository deliveryRequestRepository)
@@ -35,6 +37,8 @@ namespace DeliveryExpress.Application.DeliveryRequestApplication.Commands
                 request.ContactId,
                 new Domain.Common.AddressValueObject.Address(
                     request.Address.Street,
+                    request.Address.Number,
+                    request.Address.State,
                     request.Address.City,
                     request.Address.ZipCode,
                     request.Address.Complement,

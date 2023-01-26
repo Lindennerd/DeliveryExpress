@@ -1,4 +1,5 @@
 using DeliveryExpress.Application.DeliveryRequestApplication.DependencyInjection;
+using DeliveryExpress.Infrastructure;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services.AddControllers();
 
 builder.Services
     .AddDeliveryRequestModule();
+
+builder.Services.AddDeliveryRequestRepository();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

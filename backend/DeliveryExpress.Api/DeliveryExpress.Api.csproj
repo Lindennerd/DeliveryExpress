@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DeliveryExpress.Application\DeliveryExpress.Application.csproj" />
     <ProjectReference Include="..\DeliveryExpress.Contracts\DeliveryExpress.Contracts.csproj" />
+    <ProjectReference Include="..\DeliveryExpress.Infrastructure\DeliveryExpress.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,3 +1,4 @@
+using DeliveryExpress.Application.DeliveryRequestApplication.Events;
 using DeliveryExpress.Contracts.CreateDeliveryRequest;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -35,16 +36,20 @@ namespace DeliveryExpress.Api.Controllers
                 logger.LogInformation("Creating delivery request");
                 CreateDeliveryRequestResponse response = await mediator.Send(new CreateDeliveryRequestCommand
                 {
+                    Address = request.Address,
                     Items = request.Items,
                     ClientId = request.ClientId,
                     ContactId = 1 //TODO! request.StablishmentId
                 });
+
+                await mediator.Publish(new DeliveryRequestCreated { Id = response.Id });
+
                 return Ok(response);
             }
             catch (Exception e)
             {
                 logger.LogError(e, "Error creating delivery request");
-                return BadRequest();
+                return BadRequest(e.Message);
             }
         }
     }

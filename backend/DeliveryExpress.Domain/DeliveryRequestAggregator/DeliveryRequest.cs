@@ -17,11 +17,11 @@ namespace DeliveryExpress.Domain.DeliveryRequestAggregator
 
         public DeliveryRequest(int clientId, int contactId, Address address)
         {
-            validator.ValidateAndThrow(this);
-
             Client = clientId;
             Contact = contactId;
             Address = address;
+
+            validator.ValidateAndThrow(this);
         }
 
         public void UpdateStatus(DeliveryRequestStatus status)
@@ -60,7 +60,11 @@ namespace DeliveryExpress.Domain.DeliveryRequestAggregator
         public DeliveryRequestValidator()
         {
             _ = RuleFor(x => x.Address).NotNull();
-            _ = RuleFor(x => x.Status).IsInEnum();
+            _ = RuleFor(x => x.Client).GreaterThan(0);
+            _ = RuleFor(x => x.Contact).GreaterThan(0);
+            _ = RuleFor(x => x.Status)
+                .Must(x => x.Id is > 0 and < 7)
+                .WithMessage("Invalid status. It must be either Pending (1), Accepted (2), Rejected (3), InProgress (4), Delivered (5) or Canceled (6)");
         }
     }
 }
