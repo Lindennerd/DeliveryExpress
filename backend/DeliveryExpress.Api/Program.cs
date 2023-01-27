@@ -1,3 +1,4 @@
+using DeliveryExpress.Application;
 using DeliveryExpress.Application.DeliveryRequestApplication.DependencyInjection;
 using DeliveryExpress.Infrastructure;
 
@@ -11,6 +12,8 @@ builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddDeliveryRequestModule()
     .AddDeliveryRequestRepository();
+
+builder.Services.AddSignalR();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -30,5 +33,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<DeliveryExpressHub>("/deliveryExpressHub");
 
 app.Run();
