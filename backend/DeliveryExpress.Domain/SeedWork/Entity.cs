@@ -46,8 +46,6 @@ namespace DeliveryExpress.Domain.SeedWork
             {
                 if (!_requestedHashCode.HasValue)
                     _requestedHashCode = this.Id.GetHashCode() ^ 31;
-                // XOR for random distribution. See:
-                // https://learn.microsoft.com/archive/blogs/ericlippert/guidelines-and-rules-for-gethashcode
                 return _requestedHashCode.Value;
             }
             else
@@ -65,6 +63,11 @@ namespace DeliveryExpress.Domain.SeedWork
         public static bool operator !=(Entity left, Entity right)
         {
             return !(left == right);
+        }
+
+        public void ClearDomainEvents()
+        {
+            DomainEvents?.Clear();
         }
     }
 }

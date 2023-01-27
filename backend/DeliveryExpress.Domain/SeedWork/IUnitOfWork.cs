@@ -1,6 +1,6 @@
 namespace DeliveryExpress.Domain.SeedWork;
 public interface IUnitOfWork : IDisposable
 {
-    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
-    Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken));
+    Task<int> SaveChangesAsync<T>(CancellationToken cancellationToken = default(CancellationToken)) where T : Entity;
+    Task<bool> SaveEntitiesAsync<T>(CancellationToken cancellationToken = default(CancellationToken)) where T : Entity;
 }

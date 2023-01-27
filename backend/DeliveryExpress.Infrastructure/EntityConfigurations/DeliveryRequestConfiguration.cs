@@ -14,7 +14,7 @@ namespace DeliveryExpress.Infrastructure.EntityConfigurations
             _ = builder.Property(x => x.Id).UseHiLo("DeliveryRequestseq", DeliveryExpressContext.DEFAULT_SCHEMA);
             _ = builder.Property<int>("clientId").HasColumnName("ClientId").IsRequired();
             _ = builder.Property<int>("contactId").HasColumnName("ContactId").IsRequired();
-            _ = builder.Property<DateTime>("requestDate").HasColumnName("RequestDate").HasDefaultValue(DateTime.Now).IsRequired();
+            _ = builder.Property(x => x.DeliveryDate).HasColumnName("DeliveryDate").HasDefaultValue(DateTime.Now).IsRequired();
             _ = builder.Property(x => x.Contact).IsRequired();
             _ = builder.OwnsOne(x => x.Address, e =>
             {

@@ -1,4 +1,3 @@
-using DeliveryExpress.Application.DeliveryRequestApplication.Events;
 using DeliveryExpress.Contracts.CreateDeliveryRequest;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -41,8 +40,6 @@ namespace DeliveryExpress.Api.Controllers
                     ClientId = request.ClientId,
                     ContactId = 1 //TODO! request.StablishmentId
                 });
-
-                await mediator.Publish(new DeliveryRequestCreated { Id = response.Id });
 
                 return Ok(response);
             }

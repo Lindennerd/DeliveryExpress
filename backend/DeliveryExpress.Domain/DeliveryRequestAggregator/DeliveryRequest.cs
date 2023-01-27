@@ -1,4 +1,5 @@
 using DeliveryExpress.Domain.Common.AddressValueObject;
+using DeliveryExpress.Domain.DeliveryRequestAggregator.Events;
 using DeliveryExpress.Domain.SeedWork;
 using FluentValidation;
 
@@ -25,6 +26,8 @@ namespace DeliveryExpress.Domain.DeliveryRequestAggregator
             Address = address;
 
             validator.ValidateAndThrow(this);
+
+            AddDomainEvent(new DeliveryRequestCreated { Id = Id });
         }
 
         public void UpdateStatus(DeliveryRequestStatus status)

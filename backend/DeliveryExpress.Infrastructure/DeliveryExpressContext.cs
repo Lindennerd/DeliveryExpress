@@ -22,13 +22,6 @@ namespace DeliveryExpress.Infrastructure.DeliveryRequest
         }
         public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
         public bool HasActiveTransaction => _currentTransaction != null;
-        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
-        {
-            // TODO: Dispatch Domain Events collection.
-            // await _mediator.DispatchDomainEventsAsync(this);
-            await SaveChangesAsync(cancellationToken);
-            return true;
-        }
         public async Task<IDbContextTransaction> BeginTransactionAsync()
         {
             if (_currentTransaction != null) return null;
@@ -82,6 +75,20 @@ namespace DeliveryExpress.Infrastructure.DeliveryRequest
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new DeliveryRequestConfiguration());
+        }
+
+        public async Task<int> SaveChangesAsync<T>(CancellationToken cancellationToken = default) where T : Entity
+        {
+            await _mediator.DispatchDomainEventsAsync<T>(this);
+            await SaveChangesAsync(cancellationToken);
+            return 0;
+        }
+
+        public async Task<bool> SaveEntitiesAsync<T>(CancellationToken cancellationToken = default) where T : Entity
+        {
+            await _mediator.DispatchDomainEventsAsync<T>(this);
+            await SaveChangesAsync(cancellationToken);
+            return true;
         }
     }
 }

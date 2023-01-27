@@ -1,4 +1,3 @@
-using DeliveryExpress.Application.DeliveryRequestApplication.Events;
 using DeliveryExpress.Contracts.Common;
 using DeliveryExpress.Contracts.CreateDeliveryRequest;
 using DeliveryExpress.Domain.DeliveryRequestAggregator;
@@ -19,7 +18,6 @@ namespace DeliveryExpress.Application.DeliveryRequestApplication.Commands
     {
         private readonly ILogger<CreateDeliveryRequestHandler> logger;
         private readonly IDeliveryRequestRepository deliveryRequestRepository;
-
 
         public CreateDeliveryRequestHandler(
             ILogger<CreateDeliveryRequestHandler> logger,
@@ -45,7 +43,7 @@ namespace DeliveryExpress.Application.DeliveryRequestApplication.Commands
                     request.Address.Neighborhood
                 ));
             DeliveryRequest created = deliveryRequestRepository.Add(deliveryRequest);
-            _ = await deliveryRequestRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+            _ = await deliveryRequestRepository.UnitOfWork.SaveEntitiesAsync<DeliveryRequest>(cancellationToken);
             return new() { Id = created.Id };
         }
     }
