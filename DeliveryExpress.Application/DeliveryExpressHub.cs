@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using SignalRSwaggerGen.Attributes;
 
 namespace DeliveryExpress.Application
 {
+    [SignalRHub]
     public class DeliveryExpressHub : Hub
     {
         private readonly ILogger<DeliveryExpressHub> logger;
