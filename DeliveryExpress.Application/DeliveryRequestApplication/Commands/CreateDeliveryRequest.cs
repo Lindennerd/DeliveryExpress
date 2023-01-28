@@ -1,5 +1,5 @@
 using DeliveryExpress.Contracts.Common;
-using DeliveryExpress.Contracts.CreateDeliveryRequest;
+using DeliveryExpress.Contracts.CreateDelivery;
 using DeliveryExpress.Domain.DeliveryRequestAggregator;
 using MediatR;
 using Microsoft.Extensions.Logging;

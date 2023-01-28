@@ -1,6 +1,6 @@
 using DeliveryExpress.Contracts.Common;
 
-namespace DeliveryExpress.Contracts.CreateDeliveryRequest
+namespace DeliveryExpress.Contracts.CreateDelivery
 {
     public class CreateDeliveryRequest
     {

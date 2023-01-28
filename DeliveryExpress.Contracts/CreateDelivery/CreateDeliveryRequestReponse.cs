@@ -1,4 +1,4 @@
-namespace DeliveryExpress.Contracts.CreateDeliveryRequest
+namespace DeliveryExpress.Contracts.CreateDelivery
 {
     public class CreateDeliveryRequestResponse
     {
