@@ -20,11 +20,6 @@ namespace DeliveryExpress.Api.Controllers
             this.mediator = mediator;
         }
 
-        public IActionResult Index()
-        {
-            return new RedirectResult("~/swagger");
-        }
-
         [HttpPost]
         [ProducesResponseType(typeof(CreateDeliveryRequestResponse), StatusCodes.Status200OK)]
         [ProducesErrorResponseType(typeof(ValidationProblemDetails))]
