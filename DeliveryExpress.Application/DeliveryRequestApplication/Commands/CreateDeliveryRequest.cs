@@ -32,7 +32,6 @@ namespace DeliveryExpress.Application.DeliveryRequestApplication.Commands
             logger.LogInformation("Creating delivery request");
             DeliveryRequest deliveryRequest = new(
                 request.ClientId,
-                request.ContactId,
                 new Domain.Common.AddressValueObject.Address(
                     request.Address.Street,
                     request.Address.Number,

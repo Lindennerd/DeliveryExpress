@@ -13,6 +13,8 @@ namespace DeliveryExpress.Domain.ClientAggregator
         public string? Email { get; }
         public Address Address { get; } = null!;
 
+        protected Client() { }
+
         public Client(string name, string phone, string? email, Address address)
         {
             validator.ValidateAndThrow(this);

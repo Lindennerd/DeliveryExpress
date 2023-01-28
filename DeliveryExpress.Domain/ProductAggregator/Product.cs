@@ -11,6 +11,10 @@ namespace DeliveryExpress.Domain.ProductAggregator
         public Uri? Image { get; }
         public string Name { get; } = null!;
 
+        protected Product()
+        {
+        }
+
         public Product(string name, string description, decimal price, Uri? image)
         {
             if (string.IsNullOrWhiteSpace(name))

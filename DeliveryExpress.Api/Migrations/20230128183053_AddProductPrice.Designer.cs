@@ -4,6 +4,7 @@ using DeliveryExpress.Infrastructure.DeliveryRequest;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeliveryExpress.Api.Migrations
 {
     [DbContext(typeof(DeliveryExpressContext))]
-    partial class DeliveryExpressContextModelSnapshot : ModelSnapshot
+    [Migration("20230128183053_AddProductPrice")]
+    partial class AddProductPrice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,12 +61,12 @@ namespace DeliveryExpress.Api.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Phone");
 
-                    b.Property<int?>("stablishmentId")
+                    b.Property<int?>("_stablishmentId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("stablishmentId");
+                    b.HasIndex("_stablishmentId");
 
                     b.ToTable("Clients", "DeliveryRequest");
                 });
@@ -83,14 +86,19 @@ namespace DeliveryExpress.Api.Migrations
                         .HasColumnType("int")
                         .HasColumnName("Quantity");
 
-                    b.Property<int?>("productId")
+                    b.Property<int>("_deliveryRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("_productId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DeliveryRequestId");
 
-                    b.HasIndex("productId");
+                    b.HasIndex("_deliveryRequestId");
+
+                    b.HasIndex("_productId");
 
                     b.ToTable("DeliveryItem", "DeliveryRequest");
                 });
@@ -107,17 +115,17 @@ namespace DeliveryExpress.Api.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 1, 28, 16, 13, 43, 53, DateTimeKind.Local).AddTicks(2584))
+                        .HasDefaultValue(new DateTime(2023, 1, 28, 15, 30, 53, 648, DateTimeKind.Local).AddTicks(940))
                         .HasColumnName("DeliveryDate");
 
-                    b.Property<int?>("clientId")
+                    b.Property<int>("_clientId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("clientId");
+                    b.HasIndex("_clientId");
 
-                    b.ToTable("DeliveryRequest", "DeliveryRequest");
+                    b.ToTable("DeliveryRequests", "DeliveryRequest");
                 });
 
             modelBuilder.Entity("DeliveryExpress.Domain.ProductAggregator.Product", b =>
@@ -144,12 +152,12 @@ namespace DeliveryExpress.Api.Migrations
                         .HasColumnType("decimal")
                         .HasColumnName("Price");
 
-                    b.Property<int?>("stablishmentId")
+                    b.Property<int?>("_stablishmentId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("stablishmentId");
+                    b.HasIndex("_stablishmentId");
 
                     b.ToTable("Product", "DeliveryRequest");
                 });
@@ -180,12 +188,12 @@ namespace DeliveryExpress.Api.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasColumnName("Phone");
 
-                    b.Property<int>("stablishmentId")
+                    b.Property<int>("_stablishmentId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("stablishmentId");
+                    b.HasIndex("_stablishmentId");
 
                     b.ToTable("Contacts");
                 });
@@ -219,7 +227,7 @@ namespace DeliveryExpress.Api.Migrations
                 {
                     b.HasOne("DeliveryExpress.Domain.StablishmentAggregator.Stablishment", null)
                         .WithMany("Clients")
-                        .HasForeignKey("stablishmentId");
+                        .HasForeignKey("_stablishmentId");
 
                     b.OwnsOne("DeliveryExpress.Domain.Common.AddressValueObject.Address", "Address", b1 =>
                         {
@@ -284,16 +292,26 @@ namespace DeliveryExpress.Api.Migrations
                         .WithMany("Items")
                         .HasForeignKey("DeliveryRequestId");
 
+                    b.HasOne("DeliveryExpress.Domain.DeliveryRequestAggregator.DeliveryRequest", null)
+                        .WithMany()
+                        .HasForeignKey("_deliveryRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DeliveryExpress.Domain.ProductAggregator.Product", null)
                         .WithMany()
-                        .HasForeignKey("productId");
+                        .HasForeignKey("_productId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DeliveryExpress.Domain.DeliveryRequestAggregator.DeliveryRequest", b =>
                 {
                     b.HasOne("DeliveryExpress.Domain.ClientAggregator.Client", null)
                         .WithMany()
-                        .HasForeignKey("clientId");
+                        .HasForeignKey("_clientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.OwnsOne("DeliveryExpress.Domain.Common.AddressValueObject.Address", "Address", b1 =>
                         {
@@ -342,7 +360,7 @@ namespace DeliveryExpress.Api.Migrations
 
                             b1.HasKey("DeliveryRequestId");
 
-                            b1.ToTable("DeliveryRequest", "DeliveryRequest");
+                            b1.ToTable("DeliveryRequests", "DeliveryRequest");
 
                             b1.WithOwner()
                                 .HasForeignKey("DeliveryRequestId");
@@ -365,7 +383,7 @@ namespace DeliveryExpress.Api.Migrations
 
                             b1.HasKey("DeliveryRequestId");
 
-                            b1.ToTable("DeliveryRequest", "DeliveryRequest");
+                            b1.ToTable("DeliveryRequests", "DeliveryRequest");
 
                             b1.WithOwner()
                                 .HasForeignKey("DeliveryRequestId");
@@ -382,14 +400,14 @@ namespace DeliveryExpress.Api.Migrations
                 {
                     b.HasOne("DeliveryExpress.Domain.StablishmentAggregator.Stablishment", null)
                         .WithMany("Products")
-                        .HasForeignKey("stablishmentId");
+                        .HasForeignKey("_stablishmentId");
                 });
 
             modelBuilder.Entity("DeliveryExpress.Domain.StablishmentAggregator.Contact", b =>
                 {
                     b.HasOne("DeliveryExpress.Domain.StablishmentAggregator.Stablishment", "Stablishment")
                         .WithMany("Contacts")
-                        .HasForeignKey("stablishmentId")
+                        .HasForeignKey("_stablishmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

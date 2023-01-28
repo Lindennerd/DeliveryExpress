@@ -1,5 +1,7 @@
 using System.Collections.ObjectModel;
+using DeliveryExpress.Domain.ClientAggregator;
 using DeliveryExpress.Domain.Common.AddressValueObject;
+using DeliveryExpress.Domain.ProductAggregator;
 using DeliveryExpress.Domain.SeedWork;
 
 namespace DeliveryExpress.Domain.StablishmentAggregator
@@ -12,12 +14,16 @@ namespace DeliveryExpress.Domain.StablishmentAggregator
 
         private readonly List<Contact> _contacts = null!;
 
-        private readonly List<int> _products = null!;
-        private readonly List<int> _clients = null!;
+        private readonly List<Product> _products = null!;
+        private readonly List<Client> _clients = null!;
 
         public ReadOnlyCollection<Contact> Contacts => _contacts.AsReadOnly();
-        public ReadOnlyCollection<int> Products => _products.AsReadOnly();
-        public ReadOnlyCollection<int> Clients => _clients.AsReadOnly();
+        public ReadOnlyCollection<Product> Products => _products.AsReadOnly();
+        public ReadOnlyCollection<Client> Clients => _clients.AsReadOnly();
+
+        protected Stablishment()
+        {
+        }
 
         public Stablishment(string name, Address address, string phone)
         {
@@ -42,24 +48,30 @@ namespace DeliveryExpress.Domain.StablishmentAggregator
             _contacts[index] = contact;
         }
 
-        public void AddProduct(int productId)
+        public void AddProduct(Product productId)
         {
             _products.Add(productId);
         }
 
         public void RemoveProduct(int productId)
         {
-            _ = _products.Remove(productId);
+            _products
+                .Where(x => x.Id == productId)
+                .ToList()
+                .ForEach(x => _products.Remove(x));
         }
 
-        public void AddClient(int clientId)
+        public void AddClient(Client clientId)
         {
             _clients.Add(clientId);
         }
 
         public void RemoveClient(int clientId)
         {
-            _ = _clients.Remove(clientId);
+            _clients
+                .Where(x => x.Id == clientId)
+                .ToList()
+                .ForEach(x => _clients.Remove(x));
         }
     }
 }

@@ -11,7 +11,8 @@ builder.Services.AddControllers();
 builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddDeliveryRequestModule()
-    .AddDeliveryRequestRepository();
+    .AddDeliveryRequestRepository()
+    .AddClientRepository();
 
 builder.Services.AddSignalR();
 

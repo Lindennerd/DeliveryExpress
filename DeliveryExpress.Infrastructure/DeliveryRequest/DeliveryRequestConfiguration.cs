@@ -1,21 +1,17 @@
-using DeliveryExpress.Infrastructure.DeliveryRequest;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DeliveryExpress.Infrastructure.EntityConfigurations
+namespace DeliveryExpress.Infrastructure.DeliveryRequest
 {
     public class DeliveryRequestConfiguration : IEntityTypeConfiguration<Domain.DeliveryRequestAggregator.DeliveryRequest>
     {
         public void Configure(EntityTypeBuilder<Domain.DeliveryRequestAggregator.DeliveryRequest> builder)
         {
-            _ = builder.ToTable("DeliveryRequests", DeliveryExpressContext.DEFAULT_SCHEMA);
+            _ = builder.ToTable("DeliveryRequest", DeliveryExpressContext.DEFAULT_SCHEMA);
             _ = builder.HasKey(x => x.Id);
             _ = builder.Ignore(x => x.DomainEvents);
             _ = builder.Property(x => x.Id).UseHiLo("DeliveryRequestseq", DeliveryExpressContext.DEFAULT_SCHEMA);
-            _ = builder.Property<int>("clientId").HasColumnName("ClientId").IsRequired();
-            _ = builder.Property<int>("contactId").HasColumnName("ContactId").IsRequired();
             _ = builder.Property(x => x.DeliveryDate).HasColumnName("DeliveryDate").HasDefaultValue(DateTime.Now).IsRequired();
-            _ = builder.Property(x => x.Contact).IsRequired();
             _ = builder.OwnsOne(x => x.Address, e =>
             {
                 _ = e.Property(x => x.Street).HasColumnName("Street").HasMaxLength(200).IsRequired();
@@ -33,6 +29,15 @@ namespace DeliveryExpress.Infrastructure.EntityConfigurations
                 _ = e.Property(x => x.Name).HasColumnName("StatusName").HasMaxLength(100).IsRequired();
                 _ = e.WithOwner();
             });
+
+            builder?
+                .Metadata
+                .FindNavigation(nameof(Domain.DeliveryRequestAggregator.DeliveryRequest.Items))
+                .SetPropertyAccessMode(PropertyAccessMode.Field);
+
+            _ = builder.HasOne<Domain.ClientAggregator.Client>()
+                .WithMany()
+                .HasForeignKey("clientId");
         }
     }
 }

@@ -1,6 +1,8 @@
 using System.Data;
 using DeliveryExpress.Domain.SeedWork;
-using DeliveryExpress.Infrastructure.EntityConfigurations;
+using DeliveryExpress.Infrastructure.Client;
+using DeliveryExpress.Infrastructure.Product;
+using DeliveryExpress.Infrastructure.Stablishment;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -11,6 +13,11 @@ namespace DeliveryExpress.Infrastructure.DeliveryRequest
     {
         public const string DEFAULT_SCHEMA = "DeliveryRequest";
         public DbSet<Domain.DeliveryRequestAggregator.DeliveryRequest> DeliveryRequests { get; set; } = null!;
+        public DbSet<Domain.ClientAggregator.Client> Clients { get; set; } = null!;
+        public DbSet<Domain.DeliveryRequestAggregator.DeliveryItem> DeliveryItems { get; set; } = null!;
+        public DbSet<Domain.ProductAggregator.Product> Products { get; set; } = null!;
+        public DbSet<Domain.StablishmentAggregator.Stablishment> Stablishments { get; set; } = null!;
+        public DbSet<Domain.StablishmentAggregator.Contact> Contacts { get; set; } = null!;
 
         private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;
@@ -75,6 +82,11 @@ namespace DeliveryExpress.Infrastructure.DeliveryRequest
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new DeliveryRequestConfiguration());
+            modelBuilder.ApplyConfiguration(new DeliveryItemConfiguration());
+            modelBuilder.ApplyConfiguration(new ClientConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new StablishmentConfiguration());
+            modelBuilder.ApplyConfiguration(new ContactConfiguration());
         }
 
         public async Task<int> SaveChangesAsync<T>(CancellationToken cancellationToken = default) where T : Entity

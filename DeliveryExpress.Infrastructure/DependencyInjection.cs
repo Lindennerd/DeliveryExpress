@@ -1,5 +1,7 @@
+using DeliveryExpress.Domain.ClientAggregator;
 using DeliveryExpress.Domain.DeliveryRequestAggregator;
 using DeliveryExpress.Domain.SeedWork;
+using DeliveryExpress.Infrastructure.Client;
 using DeliveryExpress.Infrastructure.DeliveryRequest;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -31,6 +33,12 @@ namespace DeliveryExpress.Infrastructure
         public static IServiceCollection AddDeliveryRequestRepository(this IServiceCollection services)
         {
             _ = services.AddScoped<IDeliveryRequestRepository, DeliveryRequestRepository>();
+            return services;
+        }
+
+        public static IServiceCollection AddClientRepository(this IServiceCollection services)
+        {
+            _ = services.AddScoped<IClientRepository, ClientRepository>();
             return services;
         }
     }
