@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
-namespace DeliveryExpress.Application.DeliveryRequestApplication.Events
+namespace DeliveryExpress.Application.DeliveryRequestApplication.DeliveryRequestApplication
 {
     public class DeliveryRequestCreatedHandler : INotificationHandler<DeliveryRequestCreated>
     {

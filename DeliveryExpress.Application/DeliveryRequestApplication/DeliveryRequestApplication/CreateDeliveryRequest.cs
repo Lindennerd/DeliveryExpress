@@ -4,7 +4,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace DeliveryExpress.Application.DeliveryRequestApplication.Commands
+namespace DeliveryExpress.Application.DeliveryRequestApplication.DeliveryRequestApplication
 {
     public class CreateDeliveryRequest : IRequest<CreateDeliveryRequestResponse>
     {

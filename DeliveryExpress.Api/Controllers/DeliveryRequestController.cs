@@ -1,4 +1,4 @@
-using DeliveryExpress.Application.DeliveryRequestApplication.Commands;
+using DeliveryExpress.Application.DeliveryRequestApplication.DeliveryRequestApplication;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,12 +22,12 @@ namespace DeliveryExpress.Api.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(CreateDeliveryRequestResponse), StatusCodes.Status200OK)]
         [ProducesErrorResponseType(typeof(ValidationProblemDetails))]
-        public async Task<ActionResult<CreateDeliveryRequestResponse>> CreateDeliveryRequest([FromBody] Application.DeliveryRequestApplication.Commands.CreateDeliveryRequest request)
+        public async Task<ActionResult<CreateDeliveryRequestResponse>> CreateDeliveryRequest([FromBody] CreateDeliveryRequest request)
         {
             try
             {
                 logger.LogInformation("Creating delivery request");
-                CreateDeliveryRequestResponse response = await mediator.Send(new Application.DeliveryRequestApplication.Commands.CreateDeliveryRequest
+                CreateDeliveryRequestResponse response = await mediator.Send(new CreateDeliveryRequest
                 {
                     Address = request.Address,
                     Items = request.Items,
