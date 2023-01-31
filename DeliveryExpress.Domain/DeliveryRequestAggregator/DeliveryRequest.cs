@@ -18,6 +18,8 @@ namespace DeliveryExpress.Domain.DeliveryRequestAggregator
         public DateTime? DeliveryDate { get; private set; }
         public DeliveryRequestStatus Status { get; private set; } = DeliveryRequestStatus.Pending;
 
+        public StablishmentAggregator.Stablishment Stablishment { get; } = null!;
+
         public List<DeliveryItem> Items { get; } = new(Array.Empty<DeliveryItem>());
 
         private DeliveryRequest()

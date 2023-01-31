@@ -1,6 +1,6 @@
-using DeliveryExpress.Contracts.Common;
-using DeliveryExpress.Contracts.CreateDelivery;
+using DeliveryExpress.Domain.Common.AddressValueObject;
 using DeliveryExpress.Domain.DeliveryRequestAggregator;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -10,8 +10,28 @@ namespace DeliveryExpress.Application.DeliveryRequestApplication.Commands
     {
         public int ClientId { get; set; }
         public int ContactId { get; set; }
-        public IEnumerable<DeliveryItems> Items { get; set; } = null!;
+        public IEnumerable<DeliveryItem> Items { get; set; } = null!;
         public Address Address { get; set; } = null!;
+    }
+
+    public class CreateDeliveryRequestResponse
+    {
+        public int Id { get; set; }
+        public Domain.ClientAggregator.Client Client { get; set; } = null!;
+        public Domain.StablishmentAggregator.Stablishment Stablishment { get; set; } = null!;
+        public IEnumerable<DeliveryItem> Items { get; set; } = null!;
+        public Address Address { get; set; } = null!;
+    }
+
+    public class CreateDeliveryRequestValidator : AbstractValidator<CreateDeliveryRequest>
+    {
+        public CreateDeliveryRequestValidator()
+        {
+            _ = RuleFor(x => x.ClientId).NotEmpty();
+            _ = RuleFor(x => x.ContactId).NotEmpty();
+            _ = RuleFor(x => x.Items).NotEmpty();
+            _ = RuleFor(x => x.Address).NotNull();
+        }
     }
 
     public class CreateDeliveryRequestHandler : IRequestHandler<CreateDeliveryRequest, CreateDeliveryRequestResponse>
@@ -19,20 +39,27 @@ namespace DeliveryExpress.Application.DeliveryRequestApplication.Commands
         private readonly ILogger<CreateDeliveryRequestHandler> logger;
         private readonly IDeliveryRequestRepository deliveryRequestRepository;
 
+        private readonly CreateDeliveryRequestValidator validator;
+
         public CreateDeliveryRequestHandler(
             ILogger<CreateDeliveryRequestHandler> logger,
             IDeliveryRequestRepository deliveryRequestRepository)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.deliveryRequestRepository = deliveryRequestRepository;
+
+            validator = new CreateDeliveryRequestValidator();
         }
 
         public async Task<CreateDeliveryRequestResponse> Handle(CreateDeliveryRequest request, CancellationToken cancellationToken)
         {
             logger.LogInformation("Creating delivery request");
+
+            validator.ValidateAndThrow(request);
+
             DeliveryRequest deliveryRequest = new(
                 request.ClientId,
-                new Domain.Common.AddressValueObject.Address(
+                new Address(
                     request.Address.Street,
                     request.Address.Number,
                     request.Address.State,
@@ -41,9 +68,20 @@ namespace DeliveryExpress.Application.DeliveryRequestApplication.Commands
                     request.Address.Complement,
                     request.Address.Neighborhood
                 ));
+
+            request.Items.ToList().ForEach(item => deliveryRequest.AddItem(new DeliveryItem(item.Product.Id, item.Quantity)));
+
             DeliveryRequest created = deliveryRequestRepository.Add(deliveryRequest);
             _ = await deliveryRequestRepository.UnitOfWork.SaveEntitiesAsync<DeliveryRequest>(cancellationToken);
-            return new() { Id = created.Id };
+
+            return new CreateDeliveryRequestResponse
+            {
+                Id = created.Id,
+                Client = created.Client,
+                Stablishment = created.Stablishment,
+                Items = created.Items,
+                Address = created.Address
+            };
         }
     }
 }

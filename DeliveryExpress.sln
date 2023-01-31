@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliveryExpress.Api", "Deli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliveryExpress.Application", "DeliveryExpress.Application\DeliveryExpress.Application.csproj", "{565EAAB2-70C0-4801-AE06-02BADE83BB4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliveryExpress.Contracts", "DeliveryExpress.Contracts\DeliveryExpress.Contracts.csproj", "{B570DC67-0077-45AF-99C2-CFE561681C3F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliveryExpress.Domain", "DeliveryExpress.Domain\DeliveryExpress.Domain.csproj", "{A7BE2142-57F4-45BB-B413-A3CEDA011390}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliveryExpress.Infrastructure", "DeliveryExpress.Infrastructure\DeliveryExpress.Infrastructure.csproj", "{05D1BDF9-0F48-4F70-9CE7-92123083D6EC}"

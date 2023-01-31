@@ -16,9 +16,8 @@ namespace DeliveryExpress.Domain.DeliveryRequestAggregator
         {
         }
 
-        public DeliveryItem(int deliveryRequestId, int productId, int quantity)
+        public DeliveryItem(int productId, int quantity)
         {
-            _deliveryRequestId = deliveryRequestId;
             _productId = productId;
             Quantity = quantity;
         }

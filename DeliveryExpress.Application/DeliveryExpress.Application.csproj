@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DeliveryExpress.Contracts\DeliveryExpress.Contracts.csproj" />
     <ProjectReference Include="..\DeliveryExpress.Domain\DeliveryExpress.Domain.csproj" />
   </ItemGroup>
 

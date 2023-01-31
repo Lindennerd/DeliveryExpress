@@ -1,4 +1,3 @@
-using DeliveryExpress.Contracts.Client;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeliveryExpress.Api.Controllers
@@ -13,11 +12,11 @@ namespace DeliveryExpress.Api.Controllers
             return "Hello World";
         }
 
-        [HttpGet]
-        public ActionResult<string> Get([FromQuery] FilterClientsRequest filterRequest)
-        {
-            return filterRequest.Name;
-        }
+        // [HttpGet]
+        // public ActionResult<string> Get([FromQuery] FilterClientsRequest filterRequest)
+        // {
+        //     return filterRequest.Name;
+        // }
 
         [HttpPost]
         public ActionResult<string> Post()
