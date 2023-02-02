@@ -1,4 +1,4 @@
-using DeliveryExpress.Application.DeliveryRequestApplication.DeliveryRequestApplication;
+using DeliveryExpress.Application.DeliveryRequestApplication;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,6 +42,30 @@ namespace DeliveryExpress.Api.Controllers
                 logger.LogError(e, "Error creating delivery request");
                 return BadRequest(e.Message);
             }
+        }
+
+        [HttpGet("{id}")]
+        public async Task GetDeliveryRequest(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpGet]
+        public async Task GetDeliveryRequests()
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPut("{id}")]
+        public async Task UpdateDeliveryRequest(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task DeleteDeliveryRequest(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

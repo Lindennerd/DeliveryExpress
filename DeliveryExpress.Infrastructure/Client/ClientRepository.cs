@@ -20,6 +20,12 @@ namespace DeliveryExpress.Infrastructure.Client
             throw new NotImplementedException();
         }
 
+        public Task<Domain.ClientAggregator.Client> AddAsync(Domain.ClientAggregator.Client client)
+        {
+            UnitOfWork.SaveChangesAsync();
+            return null;
+        }
+
         public Task<Domain.ClientAggregator.Client> GetByClientIdAsync(int clientId)
         {
             throw new NotImplementedException();

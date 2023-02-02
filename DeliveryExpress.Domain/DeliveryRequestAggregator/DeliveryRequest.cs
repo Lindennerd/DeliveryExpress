@@ -32,6 +32,11 @@ namespace DeliveryExpress.Domain.DeliveryRequestAggregator
             _clientId = clientId;
             Address = address;
 
+            if (_clientId <= 0)
+            {
+                throw new InvalidOperationException("Cannot create a delivery request with an invalid client id");
+            }
+
             validator.ValidateAndThrow(this);
 
             AddDomainEvent(new DeliveryRequestCreated { Id = Id });
@@ -88,7 +93,6 @@ namespace DeliveryExpress.Domain.DeliveryRequestAggregator
         public DeliveryRequestValidator()
         {
             _ = RuleFor(x => x.Address).NotNull();
-            _ = RuleFor(x => x.Client).NotNull();
             _ = RuleFor(x => x.Status)
                 .Must(x => x.Id is > 0 and < 7)
                 .WithMessage("Invalid status. It must be either Pending (1), Accepted (2), Rejected (3), InProgress (4), Delivered (5) or Canceled (6)");

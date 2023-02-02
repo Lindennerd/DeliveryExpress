@@ -4,7 +4,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace DeliveryExpress.Application.DeliveryRequestApplication.DeliveryRequestApplication
+namespace DeliveryExpress.Application.DeliveryRequestApplication
 {
     public record DeliveryItemRequest(int ProductId, int Quantity);
 
