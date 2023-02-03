@@ -78,7 +78,7 @@ namespace DeliveryExpress.Application.DeliveryRequestApplication
 
             request.Items.ToList().ForEach(item => deliveryRequest.AddItem(new DeliveryItem(item.ProductId, item.Quantity)));
 
-            DeliveryRequest created = deliveryRequestRepository.Add(deliveryRequest);
+            DeliveryRequest created = await deliveryRequestRepository.AddAsync(deliveryRequest, cancellationToken);
             _ = await deliveryRequestRepository.UnitOfWork.SaveEntitiesAsync<DeliveryRequest>(cancellationToken);
 
             return new CreateDeliveryRequestResponse

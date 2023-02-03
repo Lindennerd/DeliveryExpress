@@ -48,11 +48,11 @@ namespace DeliveryExpress.Application.ClientApplication
 
         public async Task<CreateClientResponse> Handle(CreateClientRequest request, CancellationToken cancellationToken)
         {
-            _ = validator.ValidateAndThrow(request);
+            validator.ValidateAndThrow(request);
 
-            var client = new Client(request.Name, request.Email, request.Phone, request.Address);
+            Client client = new Client(request.Name, request.Email, request.Phone, request.Address);
 
-            await clientRepository.AddAsync(client, cancellationToken);
+            _ = await clientRepository.AddAsync(client, cancellationToken);
 
             return new CreateClientResponse
             {
