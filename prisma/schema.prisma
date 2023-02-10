@@ -20,7 +20,9 @@ model Delivery {
   client         Client         @relation(fields: [clientId], references: [id])
   clientId       Int
   stablishment   Stablishment   @relation(fields: [stablishmentId], references: [id])
+  address        Address        @relation(fields: [addressId], references: [id])
   stablishmentId Int
+  addressId      Int
 }
 
 enum DeliveryStatus {
@@ -43,6 +45,7 @@ model Address {
   updatedAt    DateTime       @updatedAt
   client       Client[]
   Stablishment Stablishment[]
+  Delivery     Delivery[]
 }
 
 model Client {
