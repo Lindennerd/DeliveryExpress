@@ -6,6 +6,86 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model Delivery {
+  id             Int            @id @default(autoincrement())
+  description    String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  deliveryStatus DeliveryStatus
+  deliveryItem   DeliveryItem[]
+  client         Client         @relation(fields: [clientId], references: [id])
+  clientId       Int
+  stablishment   Stablishment   @relation(fields: [stablishmentId], references: [id])
+  stablishmentId Int
+}
+
+enum DeliveryStatus {
+  PENDING
+  IN_PROGRESS
+  DELIVERED
+  CANCELED
+}
+
+model Address {
+  id           Int            @id @default(autoincrement())
+  street       String
+  number       String
+  complement   String?
+  neighborhood String
+  city         String
+  state        String
+  zipCode      String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  client       Client[]
+  Stablishment Stablishment[]
+}
+
+model Client {
+  id        Int        @id @default(autoincrement())
+  name      String
+  email     String
+  phone     String
+  addressId Int
+  address   Address    @relation(fields: [addressId], references: [id])
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Delivery  Delivery[]
+}
+
+model Product {
+  id           Int            @id @default(autoincrement())
+  name         String
+  description  String
+  price        Float
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  DeliveryItem DeliveryItem[]
+}
+
+model DeliveryItem {
+  id         Int      @id @default(autoincrement())
+  deliveryId Int
+  delivery   Delivery @relation(fields: [deliveryId], references: [id])
+  productId  Int
+  product    Product  @relation(fields: [productId], references: [id])
+  quantity   Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Stablishment {
+  id        Int        @id @default(autoincrement())
+  name      String
+  email     String
+  phone     String
+  addressId Int
+  address   Address    @relation(fields: [addressId], references: [id])
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Delivery  Delivery[]
 }
