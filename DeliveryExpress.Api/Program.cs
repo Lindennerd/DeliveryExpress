@@ -1,4 +1,5 @@
 using DeliveryExpress.Application;
+using DeliveryExpress.Application.ClientApplication;
 using DeliveryExpress.Application.DeliveryRequestApplication.DependencyInjection;
 using DeliveryExpress.Infrastructure;
 
@@ -11,6 +12,7 @@ builder.Services.AddControllers();
 builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddDeliveryRequestModule()
+    .AddClientModule()
     .AddDeliveryRequestRepository()
     .AddClientRepository();
 

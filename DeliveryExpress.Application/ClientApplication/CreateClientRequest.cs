@@ -50,7 +50,7 @@ namespace DeliveryExpress.Application.ClientApplication
         {
             validator.ValidateAndThrow(request);
 
-            Client client = new Client(request.Name, request.Email, request.Phone, request.Address);
+            Client client = new(request.Name, request.Email, request.Phone, request.Address);
 
             _ = await clientRepository.AddAsync(client, cancellationToken);
 
