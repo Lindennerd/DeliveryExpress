@@ -1,5 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import { AddressFactory } from 'src/@core/address/address.factory';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateDeliveryRequest } from './create-delivery.request';
 
@@ -7,33 +6,28 @@ import { CreateDeliveryRequest } from './create-delivery.request';
 export class CreateDeliveryService {
   constructor(private prisma: PrismaService) {}
 
+  private logger = new Logger(CreateDeliveryService.name);
+
   async create(delivery: CreateDeliveryRequest) {
+    this.logger.debug('Creating delivery', delivery);
+
     return await this.prisma.delivery.create({
       data: {
         description: delivery.description,
         deliveryStatus: 'PENDING',
-        stablishment: {
-          connect: {
-            id: delivery.stablishmentId,
-          },
-        },
-        client: {
-          connect: {
-            id: delivery.clientId,
-          },
-        },
-        deliveryItem: {
-          create: delivery.deliveryItems.map((item) => ({
-            quantity: item.quantity,
-            product: {
-              connect: {
-                id: item.productId,
+        stablishment: { connect: { id: delivery.stablishmentId } },
+        client: { connect: { id: delivery.clientId } },
+        DeliveryAddress: {
+          create: {
+            address: {
+              connectOrCreate: {
+                where: { id: delivery.address.id },
+                create: {
+                  ...delivery.address,
+                },
               },
             },
-          })),
-        },
-        address: {
-          connectOrCreate: AddressFactory.connectOrCreate(delivery.address),
+          },
         },
       },
     });

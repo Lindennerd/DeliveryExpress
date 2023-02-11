@@ -11,18 +11,17 @@ datasource db {
 }
 
 model Delivery {
-  id             Int            @id @default(autoincrement())
-  description    String?
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
-  deliveryStatus DeliveryStatus
-  deliveryItem   DeliveryItem[]
-  client         Client         @relation(fields: [clientId], references: [id])
-  clientId       Int
-  stablishment   Stablishment   @relation(fields: [stablishmentId], references: [id])
-  address        Address        @relation(fields: [addressId], references: [id])
-  stablishmentId Int
-  addressId      Int
+  id              Int               @id @default(autoincrement())
+  description     String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  deliveryStatus  DeliveryStatus
+  deliveryItem    DeliveryItem[]
+  client          Client            @relation(fields: [clientId], references: [id])
+  clientId        Int
+  stablishment    Stablishment      @relation(fields: [stablishmentId], references: [id])
+  stablishmentId  Int
+  DeliveryAddress DeliveryAddress[]
 }
 
 enum DeliveryStatus {
@@ -33,31 +32,30 @@ enum DeliveryStatus {
 }
 
 model Address {
-  id           Int            @id @default(autoincrement())
-  street       String
-  number       String
-  complement   String?
-  neighborhood String
-  city         String
-  state        String
-  zipCode      String
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  client       Client[]
-  Stablishment Stablishment[]
-  Delivery     Delivery[]
+  id                  Int                   @id @default(autoincrement())
+  street              String
+  number              String
+  complement          String?
+  neighborhood        String
+  city                String
+  state               String
+  zipCode             String
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  ClientAddress       ClientAddress[]
+  StablishmentAddress StablishmentAddress[]
+  DeliveryAddress     DeliveryAddress[]
 }
 
 model Client {
-  id        Int        @id @default(autoincrement())
-  name      String
-  email     String
-  phone     String
-  addressId Int
-  address   Address    @relation(fields: [addressId], references: [id])
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  Delivery  Delivery[]
+  id            Int             @id @default(autoincrement())
+  name          String
+  email         String
+  phone         String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  Delivery      Delivery[]
+  ClientAddress ClientAddress[]
 }
 
 model Product {
@@ -82,13 +80,42 @@ model DeliveryItem {
 }
 
 model Stablishment {
-  id        Int        @id @default(autoincrement())
-  name      String
-  email     String
-  phone     String
+  id                  Int                   @id @default(autoincrement())
+  name                String
+  email               String
+  phone               String
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  Delivery            Delivery[]
+  StablishmentAddress StablishmentAddress[]
+}
+
+model ClientAddress {
+  id        Int      @id @default(autoincrement())
+  clientId  Int
+  client    Client   @relation(fields: [clientId], references: [id])
   addressId Int
-  address   Address    @relation(fields: [addressId], references: [id])
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  Delivery  Delivery[]
+  address   Address  @relation(fields: [addressId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model StablishmentAddress {
+  id             Int          @id @default(autoincrement())
+  stablishmentId Int
+  stablishment   Stablishment @relation(fields: [stablishmentId], references: [id])
+  addressId      Int
+  address        Address      @relation(fields: [addressId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model DeliveryAddress {
+  id         Int      @id @default(autoincrement())
+  deliveryId Int
+  delivery   Delivery @relation(fields: [deliveryId], references: [id])
+  addressId  Int
+  address    Address  @relation(fields: [addressId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
