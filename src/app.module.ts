@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { ClientModule } from './@core/client/client.module';
 import { DeliveryModule } from './@core/delivery/delivery.module';
 import { ThrottleGuard } from './guards/throttle.guard';
 
@@ -10,6 +11,7 @@ import { ThrottleGuard } from './guards/throttle.guard';
       limit: 10,
     }),
     DeliveryModule,
+    ClientModule,
   ],
   controllers: [],
   providers: [ThrottleGuard],

@@ -4,6 +4,7 @@ import {
   IsOptional,
   Min,
 } from 'class-validator';
+import { AddressRequest } from 'src/@core/address/address.request';
 
 export class CreateDeliveryRequest {
   @IsOptional()
@@ -20,14 +21,5 @@ export class CreateDeliveryRequest {
     },
   ];
   @IsNotEmptyObject()
-  address: {
-    id?: number;
-    street: string;
-    number: string;
-    complement?: string;
-    neighborhood: string;
-    city: string;
-    state: string;
-    zipCode: string;
-  };
+  address: AddressRequest;
 }
