@@ -13,32 +13,37 @@ export class CreateDeliveryService {
   private logger = new Logger(CreateDeliveryService.name);
 
   async create(delivery: CreateDeliveryRequest) {
-    this.logger.debug('Creating delivery', delivery);
+    try {
+      this.logger.debug('Creating delivery', delivery);
 
-    const address = await this.addressService.findOrCreateAddress(
-      delivery.address,
-    );
+      const address = await this.addressService.findOrCreateAddress(
+        delivery.address,
+      );
 
-    return await this.prisma.delivery.create({
-      data: {
-        description: delivery.description,
-        deliveryStatus: 'PENDING',
-        stablishment: { connect: { id: delivery.stablishmentId } },
-        client: { connect: { id: delivery.clientId } },
-        deliveryItem: {
-          createMany: {
-            data: delivery.deliveryItems.map((item) => ({
-              quantity: item.quantity,
-              productId: item.productId,
-            })),
+      return await this.prisma.delivery.create({
+        data: {
+          description: delivery.description,
+          deliveryStatus: 'PENDING',
+          stablishment: { connect: { id: delivery.stablishmentId } },
+          client: { connect: { id: delivery.clientId } },
+          deliveryItem: {
+            createMany: {
+              data: delivery.deliveryItems.map((item) => ({
+                quantity: item.quantity,
+                productId: item.productId,
+              })),
+            },
+          },
+          DeliveryAddress: {
+            create: {
+              address: { connect: { id: address.id } },
+            },
           },
         },
-        DeliveryAddress: {
-          create: {
-            address: { connect: { id: address.id } },
-          },
-        },
-      },
-    });
+      });
+    } catch (error) {
+      this.logger.error('Error creating delivery', error.stack);
+      throw error;
+    }
   }
 }

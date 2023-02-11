@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AddressRequest } from './address.request';
 
@@ -6,23 +6,30 @@ import { AddressRequest } from './address.request';
 export class AddressService {
   constructor(private readonly prisma: PrismaService) {}
 
+  private logger = new Logger(AddressService.name);
+
   async findOrCreateAddress(address: AddressRequest) {
-    const found = await this.prisma.address.findFirst({
-      where: {
-        zipCode: address.zipCode,
-      },
-      select: {
-        id: true,
-      },
-    });
-
-    if (!found) {
-      return await this.prisma.address.create({
-        data: address,
-        select: { id: true },
+    try {
+      const found = await this.prisma.address.findFirst({
+        where: {
+          zipCode: address.zipCode,
+        },
+        select: {
+          id: true,
+        },
       });
-    }
 
-    return found;
+      if (!found) {
+        return await this.prisma.address.create({
+          data: address,
+          select: { id: true },
+        });
+      }
+
+      return found;
+    } catch (error) {
+      this.logger.error('Error finding or creating address', error.stack);
+      throw error;
+    }
   }
 }

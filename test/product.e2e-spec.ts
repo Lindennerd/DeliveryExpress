@@ -55,7 +55,6 @@ describe('AppModule (e2e)', () => {
 
     it('should not create a roduct when price is 0 or less', async () => {
       const failedProduct = { ...product, price: 0 };
-      console.log(failedProduct);
       const res = await request(app.getHttpServer())
         .post('/products')
         .send(failedProduct)

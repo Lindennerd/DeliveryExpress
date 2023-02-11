@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { AddressService } from 'src/@core/address/address.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateStablishmentRequest } from './create-stablishment.request';
@@ -10,20 +10,31 @@ export class CreateStablishmentService {
     private readonly addressService: AddressService,
   ) {}
 
-  async create(stablishment: CreateStablishmentRequest) {
-    const address = await this.addressService.findOrCreateAddress(
-      stablishment.address,
-    );
+  private logger = new Logger(CreateStablishmentService.name);
 
-    return await this.prisma.stablishment.create({
-      data: {
-        email: stablishment.email,
-        name: stablishment.name,
-        phone: stablishment.phone,
-        StablishmentAddress: {
-          create: { address: { connect: { id: address.id } } },
+  async create(stablishment: CreateStablishmentRequest) {
+    try {
+      this.logger.log(`Creating stablishment ${stablishment.name}`);
+      const address = await this.addressService.findOrCreateAddress(
+        stablishment.address,
+      );
+
+      return await this.prisma.stablishment.create({
+        data: {
+          email: stablishment.email,
+          name: stablishment.name,
+          phone: stablishment.phone,
+          StablishmentAddress: {
+            create: { address: { connect: { id: address.id } } },
+          },
         },
-      },
-    });
+      });
+    } catch (error) {
+      this.logger.error(
+        `Error creating stablishment ${stablishment.name}`,
+        error.stack,
+      );
+      throw error;
+    }
   }
 }
