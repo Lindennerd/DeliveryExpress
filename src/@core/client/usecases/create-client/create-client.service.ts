@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { AddressFactory } from 'src/@core/address/address.factory';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateClientRequest } from './create-client.request';
 
@@ -11,14 +12,7 @@ export class CreateClientService {
       data: {
         ...client,
         address: {
-          connectOrCreate: {
-            where: {
-              id: client.address.id,
-            },
-            create: {
-              ...client.address,
-            },
-          },
+          connectOrCreate: AddressFactory.connectOrCreate(client.address),
         },
       },
     });

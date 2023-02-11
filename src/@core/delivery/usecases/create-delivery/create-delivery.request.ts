@@ -14,12 +14,14 @@ export class CreateDeliveryRequest {
   @Min(1)
   stablishmentId: number;
   @ArrayMinSize(1)
-  deliveryItems: [
-    {
-      productId: number;
-      quantity: number;
-    },
-  ];
+  deliveryItems: CreateDeliveryItemsRequest[];
   @IsNotEmptyObject()
   address: AddressRequest;
+}
+
+export class CreateDeliveryItemsRequest {
+  @Min(1)
+  productId: number;
+  @Min(1)
+  quantity: number;
 }

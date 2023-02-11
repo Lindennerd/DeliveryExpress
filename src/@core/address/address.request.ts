@@ -19,13 +19,9 @@ export class AddressRequest {
   @IsOptional()
   complement?: string;
   @IsNotEmpty()
-  district: string;
-  @IsNotEmpty()
   city: string;
   @IsNotEmpty()
   state: string;
-  @IsNotEmpty()
-  country: string;
   @IsNotEmpty()
   @MinLength(8)
   @MaxLength(8)

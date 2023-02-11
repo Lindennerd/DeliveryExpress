@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { AddressFactory } from 'src/@core/address/address.factory';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateDeliveryRequest } from './create-delivery.request';
 
@@ -7,7 +8,7 @@ export class CreateDeliveryService {
   constructor(private prisma: PrismaService) {}
 
   async create(delivery: CreateDeliveryRequest) {
-    return this.prisma.delivery.create({
+    return await this.prisma.delivery.create({
       data: {
         description: delivery.description,
         deliveryStatus: 'PENDING',
@@ -32,20 +33,7 @@ export class CreateDeliveryService {
           })),
         },
         address: {
-          connectOrCreate: {
-            where: {
-              id: delivery.address.id,
-            },
-            create: {
-              street: delivery.address.street,
-              number: delivery.address.number,
-              complement: delivery.address.complement,
-              neighborhood: delivery.address.neighborhood,
-              city: delivery.address.city,
-              state: delivery.address.state,
-              zipCode: delivery.address.zipCode,
-            },
-          },
+          connectOrCreate: AddressFactory.connectOrCreate(delivery.address),
         },
       },
     });
