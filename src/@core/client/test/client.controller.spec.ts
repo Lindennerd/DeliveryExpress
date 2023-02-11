@@ -18,7 +18,7 @@ describe('ClientController', () => {
   //sets the properties of the instancie
   client.name = faker.name.firstName() + ' ' + faker.name.lastName();
   client.email = faker.internet.email();
-  client.phone = faker.phone.number('BR');
+  client.phone = faker.phone.number('#########');
   //creates an instancie of AddressRequest
   const address = new AddressRequest();
   //sets the properties of the instancie

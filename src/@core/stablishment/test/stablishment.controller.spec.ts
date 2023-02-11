@@ -13,7 +13,7 @@ describe('StablishmentController', () => {
   let controller: StablishmentController;
   const stablishment = new CreateStablishmentRequest();
   stablishment.name = faker.company.name();
-  stablishment.phone = faker.phone.number('BR');
+  stablishment.phone = faker.phone.number('#########');
   stablishment.email = faker.internet.email();
   stablishment.address = new AddressRequest();
   stablishment.address.street = faker.address.street();
