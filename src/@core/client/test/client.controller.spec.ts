@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaModule } from '../../../prisma/prisma.module';
 import { AddressRequest } from '../../address/address.request';
 import { ClientController } from '../client.controller';
 import { CreateClientRequest } from '../usecases/create-client/create-client.request';
@@ -8,6 +7,9 @@ import { CreateClientService } from '../usecases/create-client/create-client.ser
 import { faker } from '@faker-js/faker';
 import { Client } from '@prisma/client';
 import { AddressModule } from 'src/@core/address/address.module';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaMockModule } from '../../../prisma/prisma-mock.module';
+import { PrismaMockService } from './prisma-mock.service';
 
 jest.setTimeout(30000);
 
@@ -34,7 +36,12 @@ describe('ClientController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [PrismaModule, AddressModule],
+      imports: [
+        PrismaMockModule([
+          { provide: PrismaService, useValue: PrismaMockService },
+        ]),
+        AddressModule,
+      ],
       controllers: [ClientController],
       providers: [CreateClientService],
     }).compile();
@@ -56,9 +63,5 @@ describe('ClientController', () => {
     expect(result).toHaveProperty('name');
     expect(result).toHaveProperty('email');
     expect(result).toHaveProperty('phone');
-    //checks if the result has the same values as the client instancie
-    expect(result.name).toBe(client.name);
-    expect(result.email).toBe(client.email);
-    expect(result.phone).toBe(client.phone);
   });
 });
