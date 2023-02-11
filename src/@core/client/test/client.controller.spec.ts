@@ -6,6 +6,9 @@ import { CreateClientRequest } from '../usecases/create-client/create-client.req
 import { CreateClientService } from '../usecases/create-client/create-client.service';
 
 import { faker } from '@faker-js/faker';
+import { AddressModule } from 'src/@core/address/address.module';
+
+jest.setTimeout(30000);
 
 describe('ClientController', () => {
   let controller: ClientController;
@@ -24,12 +27,13 @@ describe('ClientController', () => {
   address.city = faker.address.city();
   address.state = faker.address.state();
   address.zipCode = faker.address.zipCode();
+  address.neighborhood = faker.address.county();
   //sets the address property of the client instancie
   client.address = address;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [PrismaModule],
+      imports: [PrismaModule, AddressModule],
       controllers: [ClientController],
       providers: [CreateClientService],
     }).compile();

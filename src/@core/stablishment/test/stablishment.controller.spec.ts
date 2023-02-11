@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Test, TestingModule } from '@nestjs/testing';
+import { AddressModule } from 'src/@core/address/address.module';
 import { AddressRequest } from 'src/@core/address/address.request';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { StablishmentController } from '../stablishment.controller';
@@ -20,7 +21,7 @@ describe('StablishmentController', () => {
   stablishment.address.zipCode = faker.address.zipCode();
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [PrismaModule],
+      imports: [PrismaModule, AddressModule],
       controllers: [StablishmentController],
       providers: [CreateStablishmentService],
     }).compile();

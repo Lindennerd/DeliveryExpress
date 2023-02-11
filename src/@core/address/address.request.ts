@@ -7,8 +7,6 @@ import {
 } from 'class-validator';
 
 export class AddressRequest {
-  @IsOptional()
-  id?: number;
   @IsNotEmpty()
   street: string;
   @IsNotEmpty()
