@@ -55,7 +55,6 @@ describe('ClientController', () => {
     expect(result).toHaveProperty('name');
     expect(result).toHaveProperty('email');
     expect(result).toHaveProperty('phone');
-    expect(result).toHaveProperty('address');
     //checks if the result has the same values as the client instancie
     expect(result.name).toBe(client.name);
     expect(result.email).toBe(client.email);

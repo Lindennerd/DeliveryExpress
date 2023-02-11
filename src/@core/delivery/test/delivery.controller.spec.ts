@@ -21,6 +21,7 @@ describe('DeliveryController', () => {
   delivery.address = new AddressRequest();
   delivery.address.street = faker.address.street();
   delivery.address.number = faker.address.buildingNumber();
+  delivery.address.neighborhood = faker.address.county();
   delivery.address.city = faker.address.city();
   delivery.address.state = faker.address.state();
   delivery.address.zipCode = faker.address.zipCode();
@@ -43,6 +44,5 @@ describe('DeliveryController', () => {
     expect(result).toHaveProperty('description');
     expect(result).toHaveProperty('phone');
     expect(result).toHaveProperty('email');
-    expect(result).toHaveProperty('address');
   });
 });

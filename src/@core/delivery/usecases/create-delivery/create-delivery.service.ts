@@ -25,6 +25,14 @@ export class CreateDeliveryService {
         deliveryStatus: 'PENDING',
         stablishment: { connect: { id: delivery.stablishmentId } },
         client: { connect: { id: delivery.clientId } },
+        deliveryItem: {
+          createMany: {
+            data: delivery.deliveryItems.map((item) => ({
+              quantity: item.quantity,
+              productId: item.productId,
+            })),
+          },
+        },
         DeliveryAddress: {
           create: {
             address: { connect: { id: address.id } },

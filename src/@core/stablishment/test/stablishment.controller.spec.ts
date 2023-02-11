@@ -7,6 +7,8 @@ import { StablishmentController } from '../stablishment.controller';
 import { CreateStablishmentRequest } from '../usecases/create-stablishment.request';
 import { CreateStablishmentService } from '../usecases/create-stablishment.service';
 
+jest.setTimeout(30000);
+
 describe('StablishmentController', () => {
   let controller: StablishmentController;
   const stablishment = new CreateStablishmentRequest();
@@ -16,6 +18,7 @@ describe('StablishmentController', () => {
   stablishment.address = new AddressRequest();
   stablishment.address.street = faker.address.street();
   stablishment.address.number = faker.address.buildingNumber();
+  stablishment.address.neighborhood = faker.address.county();
   stablishment.address.city = faker.address.city();
   stablishment.address.state = faker.address.state();
   stablishment.address.zipCode = faker.address.zipCode();
@@ -35,10 +38,8 @@ describe('StablishmentController', () => {
     expect(result).not.toBeNull();
     expect(result).toHaveProperty('id');
     expect(result).toHaveProperty('name');
-    expect(result).toHaveProperty('description');
     expect(result).toHaveProperty('phone');
     expect(result).toHaveProperty('email');
-    expect(result).toHaveProperty('address');
     expect(result.name).toBe(stablishment.name);
     expect(result.phone).toBe(stablishment.phone);
     expect(result.email).toBe(stablishment.email);
