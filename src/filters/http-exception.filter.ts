@@ -24,12 +24,24 @@ export class HttpExceptionFilter implements ExceptionFilter {
       exception: exception.stack,
       message: exception.message,
       cause: exception.cause,
+      fullException: exception,
     });
 
-    response.status(status).json({
-      statusCode: status,
-      timestamp: new Date().toISOString(),
-      path: request.url,
-    });
+    if (status >= 500) {
+      response.status(status).json({
+        statusCode: status,
+        timestamp: new Date().toISOString(),
+        path: request.url,
+      });
+    }
+
+    if (status >= 400) {
+      response.status(status).json({
+        statusCode: status,
+        timestamp: new Date().toISOString(),
+        path: request.url,
+        exception: exception,
+      });
+    }
   }
 }

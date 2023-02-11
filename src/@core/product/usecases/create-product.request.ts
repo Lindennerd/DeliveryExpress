@@ -7,6 +7,6 @@ export class CreateProductRequest {
   name: string;
   @IsNotEmpty()
   description: string;
-  @Min(0)
+  @Min(1)
   price: number;
 }
