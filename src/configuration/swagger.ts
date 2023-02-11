@@ -6,8 +6,7 @@ export const useSwagger = (app: INestApplication) => {
     .setTitle('Delivery API')
     .setDescription('Delivery API description')
     .setVersion('1.0')
-    .addTag('delivery')
     .build();
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('docs', app, document);
 };

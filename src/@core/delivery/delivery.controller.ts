@@ -1,8 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateDeliveryRequest } from './usecases/create-delivery/create-delivery.request';
 import { CreateDeliveryService } from './usecases/create-delivery/create-delivery.service';
 
-@Controller()
+@ApiTags('Delivery')
+@Controller('delivery')
 export class DeliveryController {
   constructor(private createDelivery: CreateDeliveryService) {}
 
