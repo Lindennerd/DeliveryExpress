@@ -6,6 +6,7 @@ import { CreateClientRequest } from '../usecases/create-client/create-client.req
 import { CreateClientService } from '../usecases/create-client/create-client.service';
 
 import { faker } from '@faker-js/faker';
+import { Client } from '@prisma/client';
 import { AddressModule } from 'src/@core/address/address.module';
 
 jest.setTimeout(30000);
@@ -47,7 +48,7 @@ describe('ClientController', () => {
 
   it('should create a client', async () => {
     //calls the create method of the controller
-    const result = await controller.create(client);
+    const result = (await controller.create(client)) as Client;
     //checks if the result is not null
     expect(result).not.toBeNull();
     //checks if the result has the properties

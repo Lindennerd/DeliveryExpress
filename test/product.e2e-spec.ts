@@ -9,7 +9,7 @@ import { CreateProductRequest } from 'src/@core/product/usecases/create-product.
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 
-describe('AppModule (e2e)', () => {
+describe('Product (e2e)', () => {
   let app: INestApplication;
   let product: CreateProductRequest;
 
