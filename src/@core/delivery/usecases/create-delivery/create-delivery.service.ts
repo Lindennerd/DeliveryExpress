@@ -1,15 +1,23 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { AddressService } from 'src/@core/address/address.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateDeliveryRequest } from './create-delivery.request';
 
 @Injectable()
 export class CreateDeliveryService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly addressService: AddressService,
+  ) {}
 
   private logger = new Logger(CreateDeliveryService.name);
 
   async create(delivery: CreateDeliveryRequest) {
     this.logger.debug('Creating delivery', delivery);
+
+    const address = await this.addressService.findOrCreateAddress(
+      delivery.address,
+    );
 
     return await this.prisma.delivery.create({
       data: {
@@ -19,14 +27,7 @@ export class CreateDeliveryService {
         client: { connect: { id: delivery.clientId } },
         DeliveryAddress: {
           create: {
-            address: {
-              connectOrCreate: {
-                where: { id: delivery.address.id },
-                create: {
-                  ...delivery.address,
-                },
-              },
-            },
+            address: { connect: { id: address.id } },
           },
         },
       },
